@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const Employer = require("../models/Employer");
 
 const userAuth = async (req, res, next) => {
   try {
@@ -30,6 +31,30 @@ const userAuth = async (req, res, next) => {
   }
 };
 
+const employerAuth = async (req,res,next) => {
+  try {
+    const token = await req.header("Authorization");
+
+    if(!token) return res.status(401).json({msg:"no token found"})
+    const bearerToken = token.replace("Bearer", "").trim();
+    const isVerify = jwt.verify(bearerToken, process.env.SECRET_KEY);
+    const employerData = await Employer.findOne({ email: isVerify.email });
+
+    if (!employerData) {  
+      return res.status(200).json({ msg: "employer not found" });
+    }
+    console.log("user =>", employerData);
+
+    req.employer = employerData;
+    req.employertoken = token;
+    req.employerId = employerData._id;
+
+    next();
+  } catch (error) {
+    res.status(500).json({msg:"invalid token"})
+  }
+}
+
 const adminValidator = async (req,res,next) => {
   try {
       const admin = req.user.isAdmin;
@@ -44,4 +69,4 @@ const adminValidator = async (req,res,next) => {
 }
 
 
-module.exports = {userAuth, adminValidator}
+module.exports = {userAuth, adminValidator, employerAuth}

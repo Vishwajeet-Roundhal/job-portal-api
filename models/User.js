@@ -5,7 +5,6 @@ const userSchema = new mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    role: { type: String, enum: ['candidate', 'employer',], default: 'candidate' },
     profilePicture: { type: String },
     resume: { type: String },
     about: { type: String },
@@ -39,13 +38,9 @@ const userSchema = new mongoose.Schema({
     ],
     isAdmin : {
         type: Boolean,
-        default:"false"
+        default: false
     },
-    companyName: { type: String }, // For employers
-    companyDescription: { type: String }, // For employers
-    companyWebsite: { type: String }, // For employers
     createdAt: { type: Date, default: Date.now },
-    updatedAt: { type: Date, default: Date.now },
   });
 
   userSchema.methods.generateToken = async function() {
