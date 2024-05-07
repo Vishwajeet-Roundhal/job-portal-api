@@ -5,7 +5,7 @@ const jobSchema = new Schema({
     title: { type: String, required: true },
     description: { type: String, required: true },
     requirements: { type: String },
-    company: { type: String },
+    company: { type: Schema.Types.ObjectId, ref: 'Employer' },
     salary: { type: Number },
     location: { type: String },
     datePosted: { type: Date, default: Date.now },
