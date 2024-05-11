@@ -68,4 +68,4 @@ const getJobAppByCandidate = async (req, res) => {
   }
 };
 
-module.exports = { crtJobApp, getAllJobApps, getOneJobApp,getJobAppByCandidate };
+module.exports = { crtJobApp, getAllJobApps, getOneJobApp, getJobAppByCandidate };

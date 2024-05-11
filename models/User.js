@@ -30,10 +30,7 @@ const userSchema = new mongoose.Schema({
     favoriteJobs: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Job' }],
     jobAlerts: [
       {
-        keywords: [{ type: String }],
         location: { type: String },
-        jobType: { type: String },
-        // Add more fields as needed
       },
     ],
     isAdmin : {

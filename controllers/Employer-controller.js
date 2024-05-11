@@ -3,7 +3,30 @@ const JobApplication = require("../models/JobApplication")
 const { sendEmail } = require('../utils/emailService');
 
 
-const updateEmployer = async(req,res) => {};
+const updateEmployer = async(req,res) => {
+    try {
+        const {companyName,industry,location,contactInfo,website,logo } = req.body;
+        const employerId = req.employer._id;
+
+        let employer = await Employer.findByIdAndUpdate(employerId, {
+            companyName: companyName,
+            industry: industry,
+            location: location,
+            contactInfo: contactInfo,
+            website: website,
+            logo: logo
+        },
+        { new: true });
+
+        if (employer) {
+            res.status(200).json(employer);
+        } else {
+            res.status(404).json({ msg: "Employer not found" });
+        }
+    } catch (error) {
+        res.status(500).json({msg:"Internal servere error"})
+    }
+};
 
 const updateStatus = async(req,res) => {
     try {
@@ -13,8 +36,8 @@ const updateStatus = async(req,res) => {
 
         const { newStatus } = req.body;
 
-        JobApplication.status = newStatus;
-        const updatedJobApplication = await JobApplication.save();
+        jobApps.status = newStatus;
+        const updatedJobApplication = await jobApps.save();
 
         const candidateEmail = jobApps.candidate.email;
 
@@ -30,4 +53,6 @@ const updateStatus = async(req,res) => {
     }
 }
 
-module.exports = updateStatus
+
+
+module.exports = {updateStatus, updateEmployer}
